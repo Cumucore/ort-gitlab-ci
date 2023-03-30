@@ -121,7 +121,6 @@ variables:
   ORT_URL: https://github.com/oss-review-toolkit/ort.git
   FF_SCRIPT_SECTIONS: "true"
 
-
 ort-scan:
   stage: ort-scan
   image:
@@ -235,7 +234,7 @@ ort-scan:
         ./scripts/setup-netrc.sh
       fi
 
-     # Create ~/.ivy2/.credentials file if IVY_CREDS_URL is set.
+      # Create ~/.ivy2/.credentials file if IVY_CREDS_URL is set.
     - |
       if [[ ! -z "$IVY_CREDS_URL" ]]; then
         ./scripts/setup-ivy-credentials.sh
@@ -274,7 +273,6 @@ ort-scan:
       ORT_CONFIG_REVISION=$(git rev-parse HEAD)
       cd ..
     - echo "export ORT_CONFIG_REVISION='$ORT_CONFIG_REVISION'" >> vars.env
-
     # Execute ORT's Downloader to fetch the source code for the project to be scanned.
     - ./scripts/ort-downloader.sh || { [ $? -eq 1 ] && exit 1; }
 
@@ -284,7 +282,7 @@ ort-scan:
     # abstracting which package managers or build systems are actually being used.
     - ./scripts/ort-step-wrapper.sh analyzer
 
-   # Executes ORT's Scanner which uses configured source code scanners to detect license / copyright findings.
+    # Executes ORT's Scanner which uses configured source code scanners to detect license / copyright findings.
     - |
       if [[ "$ORT_DISABLE_SCANNER" = "false" ]]; then
         ./scripts/ort-step-wrapper.sh scanner
@@ -357,7 +355,7 @@ ort-build-image:
   stage: build
   image: docker:20.10.18-git
   services:
-  - docker:20.10.18-dind
+    - docker:20.10.18-dind
   variables:
     DOCKER_BUILDKIT: 1
     DOCKER_DRIVER: overlay2
@@ -430,7 +428,7 @@ pages:
     - if: $CI_PIPELINE_SOURCE == "web" && $DEPLOY_PAGES == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" && "$CI_COMMIT_REF_NAME" == "$CI_DEFAULT_BRANCH"
       changes:
-      - dashboard/**/*
+        - dashboard/**/*
   artifacts:
     paths:
       - public
